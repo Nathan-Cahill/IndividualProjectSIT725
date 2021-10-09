@@ -22,7 +22,7 @@ io.on('connection', socket => {
         socket.join(user.room);
         
     //Tell single client that is connecting = personal message
-    socket.emit('message', formatMessage(botName, 'Welcome to LetsChatLiving!'));
+    socket.emit('message', formatMessage(botName, 'Welcome to the room!'));
 
     //Tell everyone a client has connected except the client connecting
     socket.broadcast
