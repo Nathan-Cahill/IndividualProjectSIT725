@@ -1,14 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
-/* nav bar image*/
-.logo-image {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-top: -6px;
-}
-
 .toast {
   position: fixed;
   top: 0;
@@ -52,7 +43,7 @@
 :root {
   --dark-color-a: #0021fa;
   --dark-color-b: #5bbbfb;
-  --light-color: #ffffff;
+  --light-color: #fafafa;
   --success-color: #5cb85c;
   --error-color: #d9534f;
 }
@@ -214,7 +205,7 @@ a {
 
 /* Join Page */
 .join-container {
-  max-width: 1000px;
+  max-width: 500px;
   margin: 80px auto;
   color: #fff;
 }

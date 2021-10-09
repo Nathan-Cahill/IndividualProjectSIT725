@@ -4,6 +4,8 @@ const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('./utils/messages');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
+// const {numberGen} = require('./utils/randomnumber');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -12,7 +14,7 @@ const io = socketio(server)
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-const botName = 'LetsChatLiving Bot';
+const botName = 'Support Bot';
 
 //Display when someone connects
 io.on('connection', socket => {
@@ -22,7 +24,7 @@ io.on('connection', socket => {
         socket.join(user.room);
         
     //Tell single client that is connecting = personal message
-    socket.emit('message', formatMessage(botName, 'Welcome to the room!'));
+    socket.emit('message', formatMessage(botName, 'Welcome to Lets Chat Support! Please wait while we connect you to support staff...'));
 
     //Tell everyone a client has connected except the client connecting
     socket.broadcast

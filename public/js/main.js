@@ -43,7 +43,8 @@ const showMessage = (message) =>{
   // }
 }
 
-
+// Notification integration with Jordan
+const notificationSocket = io();
 
 notificationSocket.on('toast toast--visible', message =>{
 
