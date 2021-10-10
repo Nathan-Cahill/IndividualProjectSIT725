@@ -4,16 +4,19 @@ const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('./utils/messages');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const morgan = require('morgan')
+
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
-// const {numberGen} = require('./utils/randomnumber');
+
 
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server)
-const bodyParser = require('body-parser');
 const { title } = require('process');
+const connectDB = require('./server/database/connection')
+dotenv.config( { path : 'config.env'} )
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -21,41 +24,14 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-//connect to mongoDB
-mongoose.connect('mongod://localhost:27017/mydb');
+// log requests using morgan modules
+app.use(morgan('tiny'));
 
-var db = mongoose.connection;
-
-db.on('error', ()=> console.log("error in connecting to database"));
-db.once('open', ()=> console.log("Connected to database"));
-
-app.post("/signup", (req,res)=>{
-    var name = req.body.name;
-    var email = req.body.email;
-    var phone = req.body.phone;
-    var password = req.body.password;
-
-    var data = {
-        "name": name,
-        "email": email,
-        "phone": phone,
-        "password": password,
-
-    }
-
-    db.collection('users').insertOne(data, (err,collection)=>{
-        if(err){
-            throw err;
-        }
-        console.log("record inserted successfully!");
-    });
-
-    return res.redirect('signup_success.hmtl')
-
-})
+//mongodb connection
+connectDB();
 
 
-
+//chatroom bot etc
 const botName = 'Support Bot';
 
 //Display when someone connects
