@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const formatMessage = require('./utils/messages');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
 // const {numberGen} = require('./utils/randomnumber');
 
@@ -10,9 +12,49 @@ const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/use
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server)
+const bodyParser = require('body-parser');
+const { title } = require('process');
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+//connect to mongoDB
+mongoose.connect('mongod://localhost:27017/mydb');
+
+var db = mongoose.connection;
+
+db.on('error', ()=> console.log("error in connecting to database"));
+db.once('open', ()=> console.log("Connected to database"));
+
+app.post("/signup", (req,res)=>{
+    var name = req.body.name;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var password = req.body.password;
+
+    var data = {
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "password": password,
+
+    }
+
+    db.collection('users').insertOne(data, (err,collection)=>{
+        if(err){
+            throw err;
+        }
+        console.log("record inserted successfully!");
+    });
+
+    return res.redirect('signup_success.hmtl')
+
+})
+
+
 
 const botName = 'Support Bot';
 
